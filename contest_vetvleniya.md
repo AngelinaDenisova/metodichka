@@ -35,3 +35,27 @@ int main() {
 	return 0;
 
 }
+
+
+Дано положительное четырехзначное число. Определить, является ли сумма его цифр двузначным числом.	
+#include <iostream>
+using namespace std;
+
+int main() {
+	int ch, x, y, z, w;
+	cin >> ch;
+	x = ch / 1000;
+	ch = ch % 1000;
+	y = ch / 100;
+	ch = ch % 100;
+	z = ch/10;
+	w = ch % 10;
+	if ((x + y + z + w) > 9) {
+		cout << "Yes";
+	}
+	else {
+		cout << "No";
+	}
+	return 0;
+
+}
