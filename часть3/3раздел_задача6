@@ -1,3 +1,4 @@
+//цикл for
 #include <iostream>
 #include <iomanip>
 using namespace std;
@@ -13,4 +14,43 @@ int main()
 		cout << (int)k << " долларов = " << fixed << setprecision(4) << k * x << " рублей" << endl;
 	}
 return 0;
+}
+
+//цикл while
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	double x;
+	double k = 5.0;
+	cout << "Введите курс рубля" << endl;
+	cin >> x;
+	while (k <= 120) {
+		cout << (int)k << " долларов = " << fixed << setprecision(4) << k * x << " рублей" << endl;
+		k = k + 5;
+	}
+	return 0;
+}
+
+//цикл do while
+
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	double x;
+	double k = 5.0;
+	cout << "Введите курс рубля" << endl;
+	cin >> x;
+	do {
+		cout << int(k) << " долларов = " << fixed << setprecision(4) << k * x << " рублей" << endl;
+		k = k + 5;
+	} while (k <= 120);
+	return 0;
 }
