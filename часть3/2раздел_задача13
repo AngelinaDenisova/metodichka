@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	char x;
+	cout << "Введите признак транспортного средства: a-автомобиль, v-велосипед, m-мотоцикл, s-самолет, p-поезд" << endl;
+	cin >> x;
+	if (x == 'a')
+		cout << "1228 км/ч";
+	if (x == 'v')
+		cout << "268 км/ч";
+	if (x == 'm')
+		cout << "350 км/ч";
+	if (x == 's')
+		cout << "3540 км/ч";
+	if (x == 'p')
+		cout << "603 км/ч";
+	if (x != 'a' && x != 'v' && x != 'm' && x != 's' && x != 'p')
+		cout << "Введено неверное значение";
+	return 0;
+}
