@@ -1,0 +1,16 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	double x;
+	double k = 5.0;
+	cout << "Введите курс рубля" << endl;
+	cin >> x;
+	for (; k <= 120.0; k = k + 5.0) {
+		cout << (int)k << " долларов = " << fixed << setprecision(4) << k * x << " рублей" << endl;
+	}
+return 0;
+}
