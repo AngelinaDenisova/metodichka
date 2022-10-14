@@ -5,10 +5,14 @@ using namespace std;
 int main()
 {
 	int p = 4;
-	for (; p >= 0; p = p - 1, cout << endl) {
+	for (; p >= 0; p = p + 1, cout << endl) {
 		for (int j = 0; j <= p; j += 1) {
 			cout << j << "\t";
 		}
 	}
 return 0;
 }
+//тесты 
+//х =0 результат:0
+//х==100 результат: 20
+//х=789 результат: 790
