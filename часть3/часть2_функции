@@ -1,29 +1,16 @@
 #include <iostream>
 using namespace std;
 
+double k(int &x) {
+	return (x % 5 == 0 ? x / 5 : x + 1);
+}
+
 int main()
 {
+	int x, p;
 	setlocale(LC_ALL, "Russian");
-	char x;
-	cout << "Введите признак транспортного средства: a-автомобиль, v-велосипед, m-мотоцикл, s-самолет, p-поезд" << endl;
+	cout << "Введите число" << endl;
 	cin >> x;
-	switch (x) {
-	case 'a':
-		cout << "1228 км/ч";
-		break;
-	case 'v':
-		cout << "268 км/ч";
-		break;
-	case 'm':
-		cout << "350 км/ч";
-	case 's':
-		cout << "3540 км/ч";
-		break;
-	case 'p':
-		cout << "603 км/ч";
-		break;
-	default:
-		cout << "Введено неверное значение";
-	}
+	cout << k(x);
 	return 0;
 }
