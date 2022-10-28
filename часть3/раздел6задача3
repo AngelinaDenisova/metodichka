@@ -1,0 +1,37 @@
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+void f(double x, int a) {
+	if (x < a)
+		cout << 0;
+	if (x > a)
+		cout << (double)(x - a) / (x + a);
+	if (x == a)
+		cout << 1;
+}
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	double a, b, h, x;
+	cout << "a=";
+	cin >> a;
+	cout << "b=";
+	cin >> b;
+	cout << "h=";
+	cin >> h;
+	cout << "x\tf(x)\n";
+	for (x = a; x <= b; x += h) {
+		cout << x << "\t";
+		cout << fixed << setprecision(2);
+		f(x, a);
+		cout << endl;
+	}
+	return 0;
+}
+
+тесты:
+а=1, b=10, h=1
+a=10, b=100, 2
+a=100, b=1000, h=100
