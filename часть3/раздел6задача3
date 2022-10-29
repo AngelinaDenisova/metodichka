@@ -1,14 +1,14 @@
-
 #include <iostream>
 #include <cmath>
 #include <iomanip>
 using namespace std;
+const double esp = 1e-12;
 void f(double x, int a) {
-	if (x < a)
+	if (x+esp < a)
 		cout << 0;
-	if (x > a)
+	if (x+esp > a)
 		cout << (double)(x - a) / (x + a);
-	if (x == a)
+	if (abs(x-a) < esp)
 		cout << 1;
 }
 int main()
@@ -22,7 +22,7 @@ int main()
 	cout << "h=";
 	cin >> h;
 	cout << "x\tf(x)\n";
-	for (x = a; x <= b; x += h) {
+	for (x = a; x < b+esp; x += h) {
 		cout << x << "\t";
 		cout << fixed << setprecision(2);
 		f(x, a);
