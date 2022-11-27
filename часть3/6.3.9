@@ -1,0 +1,33 @@
+\\если количество строк в массиве нечетное, то поменять строки местами: первую со второй, третью с четвертой..если четное, то оставить массив без изенений
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    int n, m, z;
+    cin >> n >> m;
+    int** a = new int*[n];
+    for (int i = 0; i < n; ++i)
+        a[i] = new int[m];
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j)
+            cin >> a[i][j];
+    }
+    if (n % 2 == 0) {
+        for (int i = 0; i < n - 1; i += 2)
+        {
+            int* tmp = a[i];
+            a[i] = a[i + 1];
+            a[i + 1] = tmp;
+        }
+    }
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j)
+            cout << a[i][j] << " ";
+    }
+    for (int i = 0; i < n; ++i)
+		  delete[] a[i];
+	  delete[] a;
+    return 0;
+}
