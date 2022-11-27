@@ -1,0 +1,115 @@
+//статический одномерный массив, посчитать количество элементов, не попадающих в заданный интервал
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main() {
+	int b[10];
+	for (int i = 0; i < 10; i++) {
+		cout << "b[" << i << "]=";
+		cin >> b[i];
+	}
+	int x, y, count=0;
+	cout << "x=";
+	cin >> x;
+	cout << "y=";
+	cin >> y;
+	for (int i = 0; i < 10; i++) {
+		if (b[i] < x || b[i] > y) {
+			count += 1;
+		}
+	}
+	cout << count;
+	return 0;
+}
+
+//динамический одномерный массив
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main() {
+	int n;
+	cout << "n= ";
+	cin >> n;
+	int* b = new int[n];
+	for (int i = 0; i < n; i++) {
+		cout << "b[" << i << "]=";
+		cin >> b[i];
+	}
+	int x, y, count=0;
+	cout << "x=";
+	cin >> x;
+	cout << "y=";
+	cin >> y;
+	for (int i = 0; i < n; i++) {
+		if (b[i] < x || b[i] > y) {
+			count += 1;
+		}
+	}
+	cout << count;
+  delete [] b;
+	return 0;
+}
+
+//динамический двумерный массив
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main() {
+	int n, m;
+	cout << "n= ";
+	cin >> n;
+	cout << "m= ";
+	cin >> m;
+	int** a = new int* [n];
+	for (int i = 0; i < n; ++i)
+		a[i] = new int[m];
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
+			cout << "a[" << i << "][" << j << "]=";
+			cin >> a[i][j];
+		}
+	}
+	int x, y, count=0;
+	cout << "x=";
+	cin >> x;
+	cout << "y=";
+	cin >> y;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
+			if (a[i][j] < x && a[i][j] > y)
+				count += 1;
+		}
+	}
+	cout << count;
+	for (int i = 0; i < n; ++i)
+		delete[] a[i];
+	delete[] a;
+	return 0;
+}
+
+//статический двумерный массив
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main() {
+	int a[3][3];
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			cout << "a[" << i << "][" << j << "]=";
+			cin >> a[i][j];
+		}
+	}
+	int x, y, count=0;
+	cout << "x=";
+	cin >> x;
+	cout << "y=";
+	cin >> y;
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			if (a[i][j] < x && a[i][j] > y)
+				count += 1;
+		}
+	}
+	cout << count;
+	return 0;
+}
