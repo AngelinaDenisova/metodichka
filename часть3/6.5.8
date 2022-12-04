@@ -1,0 +1,32 @@
+//вставить элемент перед всеми четными элементами массива
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n, X;
+    cout << "n="; 
+    cin >> n;
+    int* a = new int[2 * n];
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    cout << "X="; cin >> X;
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] % 2 == 0)
+        {
+            n++;
+            for (int j = n - 1; j > i; j--)
+                a[j] = a[j - 1];
+            a[i] = X;
+            i++;
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+        cout << a[i] << " ";
+    cout << endl;
+
+    delete[]a;
+    return 0;
+}
