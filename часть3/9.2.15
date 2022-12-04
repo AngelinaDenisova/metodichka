@@ -1,0 +1,22 @@
+//дан файл, компонентами которого являются числа. Число компонентов файла делится на 2. Создать новый файл, в который будет записываться минимальное число из каждой пары
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+int main() {
+    int count = 0;
+    string s;
+
+    ifstream in("f.txt");
+    ofstream out("g.txt");
+    int i, j;
+    while (in >> i && in >> j) {
+        if (i <= j)
+            out << i;
+        else
+            out << j;
+    }
+    in.close();
+    out.close();
+    return 0;
+}
