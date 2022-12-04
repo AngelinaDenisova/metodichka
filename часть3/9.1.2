@@ -1,0 +1,25 @@
+//найти количество строк, которые начинаются и заканчиваются одной буквой (проблема со считыванием файла)
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+int main() {
+    int count = 0;
+    string s;
+
+    ifstream in("C:\f.txt");
+    if (in.is_open())
+    {
+        while (getline(in, s))
+        {
+            if (s[0] == s.back()) 
+                count++;
+        }
+
+        cout << count;
+
+        in.close();
+    }
+    else cout << "Unable to open file\n";
+    return 0;
+}
