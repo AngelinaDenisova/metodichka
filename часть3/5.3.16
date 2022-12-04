@@ -3,13 +3,16 @@
 using namespace std;
 int main() {
     int n, i = 1;
+    int c = 3, b = 4;
     double e, s = 0, a = 1;
     cout << "e = ";
     cin >> e;
-    while (fabs(a) >= e) {
+    while (abs(a) >= e) {
         s += a;
         i++;
-        a = 1/(pow(3, i)+pow(4, i));
+        a = 1. / c + b;
+        c *= c;
+        b *= b;
     }
     cout << "s = " << s << endl;
     return 0;
