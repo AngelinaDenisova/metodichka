@@ -4,10 +4,14 @@
 #include <iomanip>
 using namespace std;
 double func(double x, double e, int& n) {
-    double s = 0, k = 1, znam = 1, chis = 1;
+    double s = 0, k = 1, znam = 0, chis = 1;
     while (abs(k) >= e) {
+        if (znam == 0)
+            znam = 1;
+ 
+        else
+            znam = znam * (znam + 1);
         s += k;
-        znam = znam * (znam + 1);
         chis = chis * x;
         k += chis / znam;
         n++;
@@ -17,11 +21,12 @@ double func(double x, double e, int& n) {
 int main() {
     double a, b, e, f, h, x;
     cin >> a >> b >> h >> e;
-    int i, n=0;
+    int i, n = 0;
     cout << setprecision(3);
     cout << "i\t x\t f(x) \t n\n";
     for (x = a, i = 1; x <= b; x += h, i++) {
         f = func(x, e, n);
+        cout << fixed << setprecision(3);
         cout << i << "\t" << x << "\t" << f << "\t" << n << endl;
     }
     return 0;
