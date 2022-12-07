@@ -7,19 +7,14 @@ int main() {
     int count = 0;
     string s;
 
-    ifstream in("C:\f.txt");
-    if (in.is_open())
-    {
-        while (getline(in, s))
-        {
-            if (s[0] == s.back()) 
-                count++;
-        }
-
-        cout << count;
-
-        in.close();
+    ifstream in("f.txt");
+    while(getline(in, s)){
+        if (s[0] == s.back()){
+            count++;
+            }
     }
-    else cout << "Unable to open file\n";
+    cout << count;
+    in.close();
     return 0;
 }
+
