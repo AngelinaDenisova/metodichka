@@ -1,0 +1,32 @@
+//на основе данных входного файла составить список студентов, включающий ФИО, курс, группу, ркезультат забега. Вывести в новый файл информацию о студентах заданной группы
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+ifstream in("input.txt");
+ofstream  out("output.txt");
+struct study {
+	string surname, name, otch;
+	int kyrs, gryppa, res;
+};
+int main() {
+	struct study s;
+	int n, k;
+	in >> n;
+	study* stud1 = new study[n];
+	for (int i = 0; i < n; i++) {
+		in >> stud1[i].surname;
+		in >> stud1[i].name;
+		in >> stud1[i].otch;
+		in >> stud1[i].kyrs >> stud1[i].gryppa >> stud1[i].res;
+	};
+	in >> k;
+	for (int i = 0; i < n; i++) {
+		if (stud1[i].gryppa == k) {
+			out << stud1[i].surname << " " << stud1[i].name << " ";
+		    out << stud1[i].otch << " " << stud1[i].kyrs << " ";
+		    out << stud1[i].gryppa << " " << stud1[i].res;
+		}
+	}
+	return 0;
+}
