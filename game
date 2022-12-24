@@ -1,0 +1,101 @@
+#include <iostream>
+using namespace std;
+char pos[10] = { '0','1','2','3','4','5','6','7','8','9' };
+
+int win() { //фунция проверки победы
+    if (pos[1] == pos[2] && pos[2] == pos[3])
+        return 1;
+    else if (pos[4] == pos[5] && pos[5] == pos[6])
+        return 1;
+    else if (pos[7] == pos[8] && pos[8] == pos[9])
+        return 1;
+    else if (pos[1] == pos[4] && pos[4] == pos[7])
+        return 1;
+    else if (pos[2] == pos[5] && pos[5] == pos[8])
+        return 1;
+    else if (pos[3] == pos[6] && pos[6] == pos[9])
+        return 1;
+    else if (pos[1] == pos[5] && pos[5] == pos[9])
+        return 1;
+    else if (pos[3] == pos[5] && pos[5] == pos[7])
+        return 1;
+    else if (pos[1] != '1' && pos[2] != '2' && pos[3] != '3' && pos[4] != '4' && pos[5] != '5' && pos[6] != '6' && pos[7] != '7' && pos[8] != '8' && pos[9] != '9')
+        return 0;
+    else
+        return -1;
+}
+void board() { //вывод на консоль игрового поля
+    system("cls");
+    cout << "Игрок 1 (X)  -  Игрок 2 (O)" << endl << endl;
+    cout << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << pos[1] << "  |  " << pos[2] << "  |  " << pos[3] << endl;
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << pos[4] << "  |  " << pos[5] << "  |  " << pos[6] << endl;
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << pos[7] << "  |  " << pos[8] << "  |  " << pos[9] << endl;
+    cout << "     |     |     " << endl << endl;
+}
+int main()
+{
+    setlocale(LC_ALL, "Rus");
+    int player = 1, i, num;
+
+    char k;
+    do
+    {
+        board();
+        player = (player % 2) ? 1 : 2;
+        cout << "Игрок " << player << ", введи, на какую позицию поставить крестик(нолик):  ";
+        cin >> num;
+
+        k = (player == 1) ? 'X' : 'O';
+
+        if (num == 1 && pos[1] == '1')
+
+            pos[1] = k;
+        else if (num == 2 && pos[2] == '2')
+
+            pos[2] = k;
+        else if (num == 3 && pos[3] == '3')
+
+            pos[3] = k;
+        else if (num == 4 && pos[4] == '4')
+
+            pos[4] = k;
+        else if (num == 5 && pos[5] == '5')
+
+            pos[5] = k;
+        else if (num == 6 && pos[6] == '6')
+
+            pos[6] = k;
+        else if (num == 7 && pos[7] == '7')
+
+            pos[7] = k;
+        else if (num == 8 && pos[8] == '8')
+
+            pos[8] = k;
+        else if (num == 9 && pos[9] == '9')
+
+            pos[9] = k;
+        else
+        {
+            cout << "Неверная позиция, введите число от 1 до 9";
+            player--;
+            cin.ignore(); //игнорируем введенное пользователем неверное число
+            cin.get(); //ожидаем ввода корректного числа
+        }
+        i = win();
+        player++;
+    } while (i == -1);
+    board();
+    if (i == 1)
+        cout << "==>\aИгрок" << --player << " победил ";
+    else
+        cout << "==>\aНичья!";
+    cin.ignore();
+    cin.get();
+    return 0;
+}
