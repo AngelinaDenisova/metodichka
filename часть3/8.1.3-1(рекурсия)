@@ -1,0 +1,24 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+int sum(int n, int d=1) {
+    if (d <= n) { //если делитель меньше нужнго числа, то идем дальше
+        if (n % d == 0) // если число делится без остатка
+            return d + sum(n, d + 1); //возвращаем сумму этого делителя + сумму остальных делителей
+        else
+            return sum(n, d + 1); // возвращаем суммы остальных делителей
+    }
+    else
+        return 0; // на этой итерации нет делителей для числа
+}
+int main() {
+    int a, b, res;
+    cin >> a >> b;
+    for (int i = a; i <= b; i++) {
+        res = sum(i);
+        cout << res << endl;
+        res = 0;
+    }
+    return 0;
+}
