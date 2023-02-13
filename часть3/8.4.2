@@ -1,0 +1,35 @@
+//Используя механизм перегрузки функций, разработать 2 версии функции F, заголовки
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+double const esp = 1e-12;
+void f(double x) {
+	if (x <= 1)
+		cout << "Функция не определена";
+	else cout << sqrt(pow(x, 3) - 1) / sqrt(x * x - 1);
+}
+void f(int x) {
+	if (x <= 1)
+		cout << "Функция не определена";
+	else cout << sqrt(pow(x, 3) - 1) / sqrt(x * x - 1);
+}
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	double a, b, h, x;
+	cout << "a=";
+	cin >> a;
+	cout << "b=";
+	cin >> b;
+	cout << "h=";
+	cin >> h;
+	cout << "x\tf(x)\n";
+	for (x = a; x < b+esp; x += h) {
+		cout << x << "\t";
+		cout << fixed << setprecision(2);
+		f(x);
+		cout << endl;
+	}
+	return 0;
+}
