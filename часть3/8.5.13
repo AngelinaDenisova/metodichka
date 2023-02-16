@@ -1,6 +1,7 @@
+//посчитать среднее арифметическое ненулевых элементов, расположенных над побочной диагональю
 #include <iostream>
 using namespace std;
-template <typename X> void vvodarr(X n, X m) {
+template <typename X> void vvodarr(X n, X m) { //шаблон ввода массива
 	X** a = new X* [n];
 	for (int i = 0; i < n; ++i)
 		a[i] = new X[m];
@@ -11,14 +12,14 @@ template <typename X> void vvodarr(X n, X m) {
 	}
 	srarr(X a, n, m);
 }
-template <typename X> void printarr(X* a, int n, int m) {
+template <typename X> void printarr(X* a, int n, int m) { //шаблон вывода массива
 	for (int i = 0; i < n; i++) {
 		for (j = 0; j < m; j++)
 			cout << a[i][j] << " ";
 		cout << endl;
 	}
 }
-template <typename X> X srarr(X* a, int n, int m) {
+template <typename X> X srarr(X* a, int n, int m) { //шаблон решения основной задачи
 	int count = 0;
 	int sum = 0;
 	double sr = 0;
