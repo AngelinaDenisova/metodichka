@@ -19,7 +19,7 @@ template <typename X> void printarr(X* a, int n, int m) { //шаблон выв�
 		cout << endl;
 	}
 }
-template <typename X> X srarr(X* a, int n, int m) { //шаблон решения основной задачи
+template <typename X> double srarr(X* a, int n, int m) { //шаблон решения основной задачи
 	int count = 0;
 	int sum = 0;
 	double sr = 0;
