@@ -4,32 +4,32 @@
 #include <iomanip>
 using namespace std;
 double const esp = 1e-12;
-void f(double x) {
-	if (x <= 1)
-		cout << "Функция не определена";
-	else cout << sqrt(pow(x, 3) - 1) / sqrt(x * x - 1);
+double f(double x) {
+	double y;
+	if (abs(x) < 3)
+		y = sin(x);
+	if (abs(x) >= 3 or abs(x) < 9)
+		y = (sqrt(x * x + 1)) / (sqrt(x * x + 5));
+	if (abs(x) >= 9)
+		y = (sqrt(x * x + 1)) - (sqrt(x * x + 5));
+	return y;
 }
-void f(int x) {
-	if (x <= 1)
-		cout << "Функция не определена";
-	else cout << sqrt(pow(x, 3) - 1) / sqrt(x * x - 1);
+void f(double x, double& y) {
+	if (abs(x) < 3)
+		y = sin(x);
+	if (abs(x) >= 3 or abs(x) < 9)
+		y = (sqrt(x * x + 1)) / (sqrt(x * x + 5));
+	if (abs(x) >= 9)
+		y = (sqrt(x * x + 1)) - (sqrt(x * x + 5));
 }
 int main()
 {
-	setlocale(LC_ALL, "Russian");
-	double a, b, h, x;
-	cout << "a=";
-	cin >> a;
-	cout << "b=";
-	cin >> b;
-	cout << "h=";
-	cin >> h;
-	cout << "x\tf(x)\n";
-	for (x = a; x < b+esp; x += h) {
-		cout << x << "\t";
-		cout << fixed << setprecision(2);
-		f(x);
-		cout << endl;
-	}
+	double x, y;
+	cin >> x;
+	y = f(x);
+	cout << y << endl;
+	y = 0;
+	f(x, y);
+	cout << y << endl;
 	return 0;
 }
