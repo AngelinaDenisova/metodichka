@@ -2,25 +2,27 @@
 #include <iostream>
 #include <string>
 using namespace std;
+//функция печати верхней чати картинки
 char f(char ch, int &n, int &i) {
-    string a(n, ch);
-    string b((i/2), ' ');
+    string a(n, ch); // печатаем строку из n символов ch
+    string b((i/2), ' '); //i/2 пробелов по бокам для симметричности
     cout << b << a << '\n';
     if (ch < 'Z') 
-        f(ch+1, n-= 2, i+=2); 
-    return ch + 25;
+        f(ch+1, n-= 2, i+=2); //берем следующаую букву и проделываем то же самое 
+    return ch + 25; // +25, т.к. букв в алфавите 26
 }
+// функция печати нижней части картинки
 void f1(char ch, int n, int i) {
-    string a(n, ch);
-    string b((i / 2), ' ');
+    string a(n, ch); //строка из n символов ch
+    string b((i / 2), ' '); // i/2 пробелов по бокам для симметрии
     cout << b << a << '\n';
     if (ch > 'A') 
         f1(ch-1, n+=2, i-= 2);    
 }
  
 int main(){
-    char ch = 'A';
-    int n = 80, i = 2;
+    char ch = 'A'; 
+    int n = 80, i = 2; // кол-во букв в текущей строке, кол-во, на которое они уменьшаются
     ch=f(ch, n, i);
     ch--; n += 2; i -= 2;
     f1(ch, n, i);
