@@ -1,0 +1,56 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+ifstream in("input.txt");
+ofstream out("output.txt");
+struct student {
+    int number, year;
+    int mark[5];
+    double sr;
+    string surname, name, otch;
+    void print();
+};
+void student::print() {
+    out << number << ' ' << surname << ' ' << name << ' ' << otch << ' ' << year << ' ';
+        for (int j = 0; j < 5; j++) {
+            out << mark[j] << ' '; }
+    out << sr;
+    out << endl; }
+template <typename mas>
+void sort(mas* a, int n)
+{
+    mas temp;
+    int i, j, incr=n/2;
+    while (incr > 0){
+        for(i=incr; i<n; i++){
+            j = i-incr;
+            while (j >= 0){
+                if (a[j] > a[j+incr]) swap(a[j], a[j+incr]);
+                else j = -1;
+            }
+        }
+        incr = incr/2;
+    }
+}
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int i = 0;
+    student top[100];
+    if (!in)
+        cout << "Error!";
+    else {
+        while (in.peek() != EOF) {
+            in >> top[i].number >> top[i].surname >> top[i].name >> top[i].otch >> top[i].year;
+            top[i].sr = 0;
+            for (int j = 0; j < 5; j++) {
+                in >> top[i].mark[j];
+                top[i].sr += top[i].mark[j]; }
+            i++;
+        }
+    }
+    sort(top, i);
+    for (int i = 0; i < 6; i++)
+    top[i].print();
+}
