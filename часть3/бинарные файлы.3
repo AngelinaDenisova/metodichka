@@ -1,4 +1,4 @@
-//создать файл и записать в него все обратные натуральные числа.Вывести на экран все компоненты файла кратные трем
+//создать файл и записать в него обратные натуральные числа. Вывести компоненты файла с порядковым номером, кратным трем
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -10,13 +10,14 @@ int main()
     cin >> n;
     for (i=1; i<=n; i++){
         k=1./i;
-        out.write((char*)&k, sizeof(k));
+        if (i%3==0)
+            out.write((char*)&k, sizeof(k));
     }
     out.close();
     ifstream in("f.dat", ios::binary);
     while (in.peek()!=EOF){
-        in.read((char*)&k, sizeof(k));
-        cout << k << " ";
+            in.read((char*)&k, sizeof(k));
+            cout << k << " ";
     }
     in.close();
     return 0;
