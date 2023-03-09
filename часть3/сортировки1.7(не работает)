@@ -1,56 +1,53 @@
+//в файле сведения о студентах. Отсортировать по убыванию суммы оценок методом Шелла
+// 1. Метод пузырька
 #include <iostream>
 #include <fstream>
-#include <string>
 using namespace std;
 ifstream in("input.txt");
 ofstream out("output.txt");
-struct student {
+struct Student {
     int number, year;
     int mark[5];
     double sr;
     string surname, name, otch;
     void print();
 };
-void student::print() {
+void Student::print() {
     out << number << ' ' << surname << ' ' << name << ' ' << otch << ' ' << year << ' ';
-        for (int j = 0; j < 5; j++) {
-            out << mark[j] << ' '; }
+    for (int j = 0; j < 5; j++) {
+        out << mark[j] << ' '; }
     out << sr;
-    out << endl; }
+    out << endl;
+}
 template <typename mas>
-void sort(mas* a, int n)
+void sort(mas* a, int n) //пузырьком
 {
-    mas temp;
-    int i, j, incr=n/2;
-    while (incr > 0){
-        for(i=incr; i<n; i++){
-            j = i-incr;
-            while (j >= 0){
-                if (a[j] > a[j+incr]) swap(a[j], a[j+incr]);
-                else j = -1;
-            }
+    int i, j;
+    for (i = 0; i < n - 1; i++) {
+        for (j = n - 1; j > i; j--) {
+            if (a[j].sr > a[j - 1].sr)
+                swap(a[j], a[j-1]);
         }
-        incr = incr/2;
     }
 }
-int main()
-{
+
+int main() {
     setlocale(LC_ALL, "Russian");
     int i = 0;
-    student top[100];
-    if (!in)
-        cout << "Error!";
-    else {
-        while (in.peek() != EOF) {
-            in >> top[i].number >> top[i].surname >> top[i].name >> top[i].otch >> top[i].year;
-            top[i].sr = 0;
-            for (int j = 0; j < 5; j++) {
-                in >> top[i].mark[j];
-                top[i].sr += top[i].mark[j]; }
-            i++;
+    Student top[20];
+    while (in.peek() != EOF) {
+        in >> top[i].number >> top[i].surname >> top[i].name >> top[i].otch >> top[i].year;
+        top[i].sr = 0;
+        for (int j = 0; j < 5; j++) {
+            in >> top[i].mark[j];
+            top[i].sr += top[i].mark[j];
         }
+        i++;
     }
     sort(top, i);
     for (int i = 0; i < 6; i++)
     top[i].print();
-}
+    in.close();
+    out.close();
+    return 0;
+    }
