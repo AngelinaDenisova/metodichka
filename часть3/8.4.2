@@ -15,12 +15,7 @@ double f(double x) {
 	return y;
 }
 void f(double x, double& y) {
-	if (abs(x) < 3)
-		y = sin(x);
-	if (abs(x) >= 3 or abs(x) < 9)
-		y = (sqrt(x * x + 1)) / (sqrt(x * x + 5));
-	if (abs(x) >= 9)
-		y = (sqrt(x * x + 1)) - (sqrt(x * x + 5));
+	f(x);
 }
 int main()
 {
