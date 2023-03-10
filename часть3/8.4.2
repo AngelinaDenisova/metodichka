@@ -6,11 +6,11 @@ using namespace std;
 double const esp = 1e-12;
 double f(double x) {
 	double y;
-	if (abs(x) < 3)
+	if (3-abs(x) > esp)
 		y = sin(x);
-	if (abs(x) >= 3 or abs(x) < 9)
+	if (3+esp > abs(x) or 9-abs(x) > esp)
 		y = (sqrt(x * x + 1)) / (sqrt(x * x + 5));
-	if (abs(x) >= 9)
+	if (9+esp > abs(x))
 		y = (sqrt(x * x + 1)) - (sqrt(x * x + 5));
 	return y;
 }
