@@ -9,15 +9,16 @@ int main()
     double k;
     cin >> n;
     for (i=1; i<=n; i++){
-        k=1./i;
-        if (i%3==0)
-            out.write((char*)&k, sizeof(k));
+        k=1.0/i;
+        out.write((char*)&k, sizeof(k));
     }
     out.close();
     ifstream in("f.dat", ios::binary);
+    in.seekg(sizeof(double)*3);
     while (in.peek()!=EOF){
             in.read((char*)&k, sizeof(k));
             cout << k << " ";
+            in.seekg(sizeof(double)*3, ios::cur);
     }
     in.close();
     return 0;
