@@ -1,0 +1,103 @@
+Напиши программу на С++. Создать класс для работы со строками. Разработать следующие члены класса: поле string line, функции, позволяющие посчитать количество цифр
+в строке, вывести на экран все символы в строке, встречающиеся в ней только 1 раз, вывести на экран самую длинную последовательность повторяющихся символов в строке,
+узнать общее количество символов в строке, сравнить 2 строки на равенство.  Кроме того, реализовать перегрузку операции унарный !, которая возвращает значение True, 
+если строка не пустая, иначе False.
+#include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
+class String {
+private:
+    string line;
+public:
+    String(string s) {
+        line = s;
+    }
+
+    // Метод для подсчета количества цифр в строке
+    int countDigits() {
+        int count = 0;
+        for (char c : line) {
+            if (isdigit(c)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // Метод для вывода на экран символов, встречающихся в строке только 1 раз
+    void sumb() {
+        unordered_map<char, int> charCount;
+        for (char c : line) {
+            charCount[c]++;
+        }
+        cout << "Встречаются один раз: ";
+        for (auto it : charCount) {
+            if (it.second == 1) {
+                cout << it.first << " ";
+            }
+        }
+        cout << endl;
+    }
+
+    // Метод для вывода на экран самой длинной последовательности повторяющихся символов в строке
+    void maxi() {
+        int maxLength = 0, currentLength = 1;
+        char maxChar = line[0], currentChar = line[0];
+        for (int i = 1; i < line.length(); i++) {
+            if (line[i] == line[i - 1]) {
+                currentLength++;
+                currentChar = line[i];
+            } else {
+                if (currentLength > maxLength) {
+                    maxLength = currentLength;
+                    maxChar = currentChar;
+                }
+                currentLength = 1;
+            }
+        }
+        if (currentLength > maxLength) {
+            maxLength = currentLength;
+            maxChar = currentChar;
+        }
+        cout << "Самая длинная последовательность: ";
+        for (int i = 0; i < maxLength; i++) {
+            cout << maxChar;
+        }
+        cout << endl;
+    }
+
+    // Метод для получения общего количества символов в строке
+    int length() {
+        return line.length();
+    }
+
+    // Метод для сравнения двух строк на равенство
+    bool rav(String other) {
+        return line == other.line;
+    }
+
+    // Перегрузка операции унарный !
+    bool operator!() {
+        return line.empty();
+    }
+
+    // Метод для вывода на экран всех символов в строке
+    void printt() {
+        cout << "Вся строка: " << line << endl;
+    }
+};
+int main() {
+    setlocale(LC_ALL, "Russian");
+    String s("Hello Word! 123");
+    cout << "Количество цифр в строке: " << s.countDigits() << endl;
+    s.sumb();
+    s.maxi();
+    cout << "Длина строки: " << s.length() << endl;
+    String s2("Hello, World! 123");
+    cout << "Равенство строк: " << s.rav(s2) << endl;
+    String s3("");
+    cout << "Перегрузка опреации " << !s3 << endl;
+    s.printt();
+    return 0;
+}
