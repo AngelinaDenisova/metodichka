@@ -1,0 +1,108 @@
+#include <iostream>
+using namespace std;
+// функция heapify принимает массив, его размер, индекс корня кучи и флаг, указывающий, 
+//нужно ли сортировать по возрастанию или убыванию.Проверяет, явл ли левый потомок наиб.элементом
+//и если это так, меняет корень с этим потомком и рекурсивно вызывает heapify для этого потомка.
+void heapify(int arr[], int n, int i, bool isAscending) {
+    int largest = i; 
+    int l = 2*i + 1; 
+    int r = 2*i + 2; 
+
+    if (isAscending) {
+        if (l < n && arr[l] > arr[largest])
+            largest = l;
+
+        if (r < n && arr[r] > arr[largest])
+            largest = r;
+    } else {
+        if (l < n && arr[l] < arr[largest])
+            largest = l;
+
+        if (r < n && arr[r] < arr[largest])
+            largest = r;
+    }
+
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest, isAscending);
+    }
+}
+ //функция heapSort принимает массив, его размер и флаг, указывающий, нужно ли сортировать 
+ //по возрастанию или убыванию. Функция сначала строит кучу из массива, затем последовательно извлекает элементы из корня кучи, 
+ //меняя их местами с последним элементом массива, и вызывает heapify для корня кучи с уменьшенным размером кучи.
+
+void heapSort(int arr[], int n, bool isAscending) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i, isAscending);
+
+    for (int i=n-1; i>=0; i--) {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0, isAscending);
+    }
+}
+//Далее была написана функция sortMatrix, которая принимает двумерный массив (матрицу) и ее размер. 
+//Функция перебирает все столбцы матрицы и, если индекс столбца четный, вызывает heapSort для столбца с флагом, 
+//указывающим на сортировку по возрастанию, а если индекс столбца нечетный, вызывает heapSort для столбца с флагом, указывающим на
+//сортировку по убыванию.
+void sortMatrix(int** matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        if (i % 2 == 0) {
+            for (int j = 0; j < n; j += 2) {
+                int arr[n];
+                for (int k = 0; k < n; k++) {
+                    arr[k] = matrix[k][j];
+                }
+                heapSort(arr, n, true);
+                for (int k = 0; k < n; k++) {
+                    matrix[k][j] = arr[k];
+                }
+            }
+        } else {
+            for (int j = 1; j < n; j += 2) {
+                int arr[n];
+                for (int k = 0; k < n; k++) {
+                    arr[k] = matrix[k][j];
+                }
+                heapSort(arr, n, false);
+                for (int k = 0; k < n; k++) {
+                    matrix[k][j] = arr[k];
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the size of the matrix: ";
+    cin >> n;
+
+    int** matrix = new int*[n];
+    for (int i = 0; i < n; i++) {
+        matrix[i] = new int[n];
+    }
+
+    cout << "Enter the elements of the matrix:" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> matrix[i][j];
+        }
+    }
+
+    sortMatrix(matrix, n);
+
+    cout << "The sorted matrix is:" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    for (int i = 0; i < n; i++) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+
+    return 0;
+}
