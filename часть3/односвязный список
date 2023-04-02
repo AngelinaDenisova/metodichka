@@ -1,0 +1,71 @@
+//Создать список из целых чисел, удалить лишние элементы так, чтобы в результирующем каждый элемент был не меньше среднего арифметического всех элементов, 
+//следующих за ним
+#include <fstream>
+#include <iostream>
+using namespace std;
+ifstream in("input.txt");
+ofstream out("output.txt");
+//структура узла списка
+struct Node {
+    int data; //данные
+    Node* next; //указатель на следующий узел
+};
+//функция добавления нового узла в начало списка
+void add_node(Node** head, int data) {
+    Node* new_node = new Node;
+    new_node->data = data;
+    new_node->next = (*head);
+    (*head) = new_node;
+}
+//удаление узлов, содержащих значения меньше среднего арифметического
+void delete_nodes(Node** head, int avg) {
+    Node* current = (*head);
+    Node* prev = NULL;
+
+    while (current != NULL && current->data < avg) {
+        (*head) = current->next;
+        delete current;
+        current = (*head);
+    }
+
+    while (current != NULL) {
+        if (current->data < avg) {
+            prev->next = current->next;
+            delete current;
+            current = prev->next;
+        }
+        else {
+            prev = current;
+            current = current->next;
+        }
+    }
+}
+//печать списка
+void print_list(Node* head) {
+    while (head != NULL) {
+        out << head->data << " ";
+        head = head->next;
+    }
+}
+
+int main() {
+    Node* head = NULL;
+    int data, sum = 0, count = 0;
+    while(in >> data) {
+        add_node(&head, data);
+        sum += data;
+        count++;
+    }
+
+    int avg = sum / count;
+
+    out << "Original list: ";
+    print_list(head);
+
+    delete_nodes(&head, avg);
+
+    out << "\nModified list: ";
+    print_list(head);
+
+    return 0;
+} 
