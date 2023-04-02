@@ -1,96 +1,41 @@
 #include <iostream>
 #include <stack>
+#include <list>
 #include <fstream>
 using namespace std;
 ifstream in("input.txt");
 ofstream out("output.txt");
-//структура узла списка
-struct Node {
-    int data;
-    Node* next;
-};
-//функция добавления нового узла в начало списка
-void add_node(Node** head, int data) {
-    Node* new_node = new Node;
-    new_node->data = data;
-    new_node->next = (*head);
-    (*head) = new_node;
-}
-//печать списка
-void print_list(Node* head) {
-    while (head != NULL) {
-        out << head->data << " ";
-        head = head->next;
-    }
-}
-//удаление лишних элементов с помощью списка
-//если текущий элемент меньше среднего арифметического - помещаем его в стек
-//после все элементы из стека удаляются
-void delete_extra_nodes(Node** head) {
-    int sum = 0, count = 0;
-    Node* current = (*head);
-    while (current != NULL) {
-        sum += current->data;
-        count++;
-        current = current->next;
-    }
-    double avg = (double)sum / count;
-
-    stack<Node*> st;
-    current = (*head);
-    Node* prev = NULL;
-
-    while (current != NULL) {
-        if (current->data < avg) {
-            st.push(current);
-            prev = current;
-            current = current->next;
-        }
-        else {
-            while (!st.empty() && current->data >= avg) {
-                Node* temp = st.top();
-                st.pop();
-                if (prev == NULL) {
-                    (*head) = current;
-                }
-                else {
-                    prev->next = current;
-                }
-                delete temp;
-                prev = current;
-                current = current->next;
-            }
-            prev = current;
-            current = current->next;
-        }
-    }
-
-    while (!st.empty()) {
-        Node* temp = st.top();
-        st.pop();
-        if (prev == NULL) {
-            (*head) = current;
-        }
-        else {
-            prev->next = current;
-        }
-        delete temp;
-    }
-}
-
 int main() {
-    Node* head = NULL;
+    list<int> lst;
     int data;
-    while(in>>data){
-        add_node(&head, data);
+    while(in >> data) {
+        lst.push_back(data);
     }
-    out << "Original list: ";
-    print_list(head);
+    stack<int> stk; // создаем стек для хранения элементов, которые нужно удалить
+    int sum = 0; // переменная для хранения суммы элементов
+    for (auto it = lst.begin(); it != lst.end(); ++it) { // проходим по всем элементам списка
+        sum += *it; // добавляем текущий элемент к сумме
+    }
+    double avg = sum*1.0/lst.size(); // вычисляем среднее арифметическое
+    for (auto it = lst.begin(); it != lst.end(); ++it) { // проходим по всем элементам списка
+        auto next_it = next(it); // получаем итератор на следующий элемент
+        if (next_it != lst.end() && *next_it < avg) { // если следующий элемент меньше среднего арифметического
+            stk.push(*next_it); // добавляем его в стек
+            lst.erase(next_it); // удаляем из списка
+        }
+    }
+    out << "Список после удаления лишних элементов: ";
+    for (auto it = lst.begin(); it != lst.end(); ++it) { // проходим по всем элементам списка
+        out << *it << " "; // выводим элемент на экран
+    }
+    out << endl;
 
-    delete_extra_nodes(&head);
-
-    out << "\nModified list: ";
-    print_list(head);
+    out << "Удаленные элементы: ";
+    while (!stk.empty()) { // пока стек не пуст
+        out << stk.top() << " "; // выводим элемент на экран
+        stk.pop(); // удаляем элемент из стека
+    }
+    out << endl;
 
     return 0;
 }
