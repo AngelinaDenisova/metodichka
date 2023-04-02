@@ -1,35 +1,96 @@
-#include <stack>
 #include <iostream>
+#include <stack>
 #include <fstream>
 using namespace std;
 ifstream in("input.txt");
 ofstream out("output.txt");
-int main()
-{
-    stack <int> t1;
-    stack <int> t2;
-    int k, sum=0, count=0;
-    while(in >> k)
-        t1.push(k);
-    if (!t1.empty()){
-        t2.push(t1.top());
-        sum += t1.top();
-        count += 1;
-        t1.pop();
+//структура узла списка
+struct Node {
+    int data;
+    Node* next;
+};
+//функция добавления нового узла в начало списка
+void add_node(Node** head, int data) {
+    Node* new_node = new Node;
+    new_node->data = data;
+    new_node->next = (*head);
+    (*head) = new_node;
+}
+//печать списка
+void print_list(Node* head) {
+    while (head != NULL) {
+        out << head->data << " ";
+        head = head->next;
     }
-    while (!t1.empty()){
-        if (t1.top()>= sum/count*1.0){
-            t2.push(t1.top());
-            sum += t1.top();
-            count += 1;
-            t1.pop();
+}
+//удаление лишних элементов с помощью списка
+//если текущий элемент меньше среднего арифметического - помещаем его в стек
+//после все элементы из стека удаляются
+void delete_extra_nodes(Node** head) {
+    int sum = 0, count = 0;
+    Node* current = (*head);
+    while (current != NULL) {
+        sum += current->data;
+        count++;
+        current = current->next;
+    }
+    double avg = (double)sum / count;
+
+    stack<Node*> st;
+    current = (*head);
+    Node* prev = NULL;
+
+    while (current != NULL) {
+        if (current->data < avg) {
+            st.push(current);
+            prev = current;
+            current = current->next;
+        }
+        else {
+            while (!st.empty() && current->data >= avg) {
+                Node* temp = st.top();
+                st.pop();
+                if (prev == NULL) {
+                    (*head) = current;
+                }
+                else {
+                    prev->next = current;
+                }
+                delete temp;
+                prev = current;
+                current = current->next;
+            }
+            prev = current;
+            current = current->next;
         }
     }
-    while (!t1.empty()){
-        out << t2.top();
-        t2.pop();
+
+    while (!st.empty()) {
+        Node* temp = st.top();
+        st.pop();
+        if (prev == NULL) {
+            (*head) = current;
+        }
+        else {
+            prev->next = current;
+        }
+        delete temp;
     }
-    in.close();
-    out.close();
+}
+
+int main() {
+    Node* head = NULL;
+    int data;
+    while(in>>data){
+        add_node(&head, data);
+    }
+    out << "Original list: ";
+    print_list(head);
+
+    delete_extra_nodes(&head);
+
+    out << "\nModified list: ";
+    print_list(head);
+
     return 0;
 }
