@@ -1,0 +1,39 @@
+#include <iostream>
+#include <queue>
+#include <list>
+#include <fstream>
+using namespace std;
+ifstream in("input.txt");
+ofstream out("output.txt");
+int main() {
+    list<int> lst;
+    int data;
+    while(in >> data) {
+        lst.push_back(data);
+    }
+    queue<int> q; // создаем стек для хранения элементов, которые нужно удалить
+    int sum = 0; // переменная для хранения суммы элементов
+     for (auto it = lst.begin(); it != lst.end(); ++it)
+    {
+        sum += *it;
+    }
+    double avg = (double)sum / lst.size();
+    for (auto it = lst.begin(); it != lst.end(); ++it)
+    {
+        if (*it >= avg) {
+            q.push(*it);
+        }
+    }
+    lst.clear();
+    while (!q.empty())
+    {
+        lst.push_back(q.front());
+        q.pop();
+    }
+    out << "Список после удаления лишних элементов: ";
+    for (auto it = lst.begin(); it != lst.end(); ++it) { // проходим по всем элементам списка
+        out << *it << " "; // выводим элемент на экран
+    }
+    out << endl;
+    return 0;
+}
