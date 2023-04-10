@@ -11,9 +11,6 @@ private:
 	string line;
 	static int count;
 public:
-	String() : line(" ") { count++; }
-	String(string line) : line(line) { count++; }
-	int GetCount() { return count; }
 	// Функция подсчета количества цифр в строке
 	int CountDigit() {
 		int k = 0;
