@@ -77,15 +77,3 @@ public:
 	}
 };
 int String::count = 0;
-int main() {
-	setlocale(LC_ALL, "Russian");
-	String s("Hello Word! 123");
-	cout << "Количество цифр в строке: " << s.CountDigit() << endl;
-	s.maxi();
-	cout << "Длина строки: " << s.length() << endl;
-	String s2("Hello, World! 123");
-	cout << "Равенство строк: " << s.rav(s2) << endl;
-	String s3("");
-	cout << "Перегрузка операции ! " << !s3 << endl;
-	return 0;
-}
