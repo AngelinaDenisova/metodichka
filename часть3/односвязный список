@@ -12,31 +12,31 @@ struct Node {
 };
 //функция добавления нового узла в начало списка
 void add_node(Node** head, int data) {
-    Node* new_node = new Node;
-    new_node->data = data;
-    new_node->next = (*head);
-    (*head) = new_node;
+    Node* new_node = new Node; //указатель на новый узел
+    new_node->data = data; //в поле data записываем переданное значение
+    new_node->next = (*head); //в поле next записываем указатель на текущую голову
+    (*head) = new_node; //обновляем head, который теперь указывает на новую голову списка
 }
 //удаление узлов, содержащих значения меньше среднего арифметического
 void delete_nodes(Node** head, int avg) {
-    Node* current = (*head);
-    Node* prev = NULL;
-
+    Node* current = (*head); //устанавливаем указатель с голову списка
+    Node* prev = NULL; //этот указатель в NULL
+//начиная с головы списка, удаляем все узлы, меньше avg
     while (current != NULL && current->data < avg) {
-        (*head) = current->next;
-        delete current;
-        current = (*head);
+        (*head) = current->next; //меняем текущий указатель на следующий
+        delete current; //удаляем текущий узел
+        current = (*head); //перемещаем указатель на новую голову
     }
-
+//проходим по оставшимся узлами списка, меньшим avg и удаляем их
     while (current != NULL) {
-        if (current->data < avg) {
-            prev->next = current->next;
-            delete current;
-            current = prev->next;
+        if (current->data < avg) { // если значение текущего узла меньше
+            prev->next = current->next; // prev в предыдущего узла смещается на следующий, после текущего 
+            delete current; //текущий узел удаляется
+            current = prev->next; // current переустанавливается на место, после удаленного
         }
         else {
-            prev = current;
-            current = current->next;
+            prev = current; //prev устанавливается на текущий узел
+            current = current->next; //current смещается на следующий
         }
     }
 }
