@@ -14,7 +14,7 @@ public:
 	// Функция подсчета количества цифр в строке
 	int CountDigit() {
 		int k = 0;
-		for (char c : line) {
+		for (char c : line) { //перебираем каждый символ в строке
 			if (isdigit(c))
 				k++;
 		}
@@ -35,8 +35,8 @@ public:
 	}
 	// Функция для вывода на экран самой длинной последовательности повторяющихся символов в строке
 	void maxi() {
-		int maxLength = 0, currentLength = 1;
-		char maxChar = line[0], currentChar = line[0];
+		int maxLength = 0, currentLength = 1; //максимальная и текущая длина последовательности
+		char maxChar = line[0], currentChar = line[0]; //символ с максимальной длиной и текущий символ
 		for (int i = 1; i < line.length(); i++) {
 			if (line[i] == line[i - 1]) {
 				currentLength++;
@@ -86,6 +86,6 @@ int main() {
 	String s2("Hello, World! 123");
 	cout << "Равенство строк: " << s.rav(s2) << endl;
 	String s3("");
-	cout << "Перегрузка опреации ! " << !s3 << endl;
+	cout << "Перегрузка операции ! " << !s3 << endl;
 	return 0;
 }
