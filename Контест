@@ -1,0 +1,65 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+class Node {
+public:
+    int value;
+    Node* next;
+    Node(int v, Node* n = nullptr) {
+        value = v;
+        next = n;
+    }
+};
+
+class Sequence {
+private:
+    Node* head;
+    Node* tail;
+public:
+    Sequence() {
+        head = nullptr;
+        tail = nullptr;
+    }
+    void readSequence() {
+        int k;
+        while (in >> k) {
+            if (k % 2 == 0) {
+                addNode(k);
+                addNode(k);
+            }
+            else
+                addNode(k);
+        }
+    }
+    void addNode(int v) {
+        Node* node = new Node(v);
+        if (head == nullptr) {
+            head = node;
+            tail = node;
+        }
+        else {
+            tail->next = node;
+            tail = node;
+        }
+    }
+    void printSequence() {
+        Node* current = head;
+        while (current != nullptr) {
+            out << current->value << " ";
+            current = current->next;
+        }
+    }
+};
+
+int main() {
+    Sequence seq;
+    seq.readSequence();
+    seq.printSequence();
+    in.close();
+    out.close();
+    return 0;
+}
