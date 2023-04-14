@@ -17,25 +17,24 @@ int main() {
         sum += *it; // добавляем текущий элемент к сумме
     }
     double avg = sum*1.0/lst.size(); // вычисляем среднее арифметическое
-    for (auto it = lst.begin(); it != lst.end(); ++it) { // проходим по всем элементам списка
-        auto next_it = next(it); // получаем итератор на следующий элемент
-        if (next_it != lst.end() && *next_it < avg) { // если следующий элемент меньше среднего арифметического
-            stk.push(*next_it); // добавляем его в стек
-            lst.erase(next_it); // удаляем из списка
+    for (auto it = lst.begin(); it != lst.end(); ++it)
+    {
+        if (*it >= avg) {
+            stk.push(*it);
         }
     }
-    out << "Список после удаления лишних элементов: ";
+    lst.clear();
+    while (!stk.empty()) 
+    {
+        lst.push_back(stk.top()); //добавляем в список элементы стека
+        stk.pop();
+    }
+    out << "Список после удаления элементов: ";
     for (auto it = lst.begin(); it != lst.end(); ++it) { // проходим по всем элементам списка
         out << *it << " "; // выводим элемент на экран
     }
     out << endl;
-
-    out << "Удаленные элементы: ";
-    while (!stk.empty()) { // пока стек не пуст
-        out << stk.top() << " "; // выводим элемент на экран
-        stk.pop(); // удаляем элемент из стека
-    }
-    out << endl;
+    
 
     return 0;
 }
