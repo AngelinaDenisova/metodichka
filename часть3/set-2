@@ -15,26 +15,16 @@ int main() {
     }
     for (int i = 0; i < N; i++) {
         set<char> upper; //множество с прописными буквами
-        set<char> lower; //множество со строчными буквами
         for (int j = 0; j < strings[i].length(); j++) {
             if (isupper(strings[i][j])) { //если символ - прописная буква
                 upper.insert(strings[i][j]); //добавляем ее в upper
-            } else if (islower(strings[i][j])) { //если строчная
-                lower.insert(strings[i][j]); //добавляем в lower
             }
         }
-        //Функция set_difference принимает четыре параметра: итераторы на начало и конец первого множества, 
-        //итераторы на начало и конец второго множества, а также итератор на начало результирующего множества. 
-        //В данном случае функция set_difference используется для нахождения разности множеств upper и lower.
-        //Функция inserter используется для вставки элементов в множество result. 
-        //Она принимает два параметра: итератор на множество, в которое нужно вставлять элементы,
-        //и итератор на позицию, с которой нужно начать вставку.
-        set<char> result;
-        set_difference(upper.begin(), upper.end(), lower.begin(), lower.end(), inserter(result, result.end()));
-        for (set<char>::iterator it = result.begin(); it != result.end(); it++) {
-            cout << *it;
+        for (char c: strings[i]){
+            if (islower(c) && upper.count(toupper(c))==0)
+             cout << c << " ";
+            }
+            cout << endl;
         }
-        cout << endl;
-    }
     return 0;
 }
