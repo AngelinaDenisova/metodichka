@@ -60,3 +60,36 @@ int main() {
     }
     return 0;
 }
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+struct Point {
+    int x, y;
+};
+bool cmp(const Point& p1, const Point& p2) {
+    return p1.y < p2.y;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<Point> points(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> points[i].x >> points[i].y;
+    }
+    //а
+    sort(points.begin(), points.end(), cmp);
+    vector<Point> result;
+    for (int i = 0; i < n; ++i) {
+        if (points[i].y >= 0) {
+            result.push_back(points[i]);
+        }
+    }
+    for (const auto& point : result) {
+        cout << point.x << " " << point.y << endl;
+    }
+
+    return 0;
+}
+
