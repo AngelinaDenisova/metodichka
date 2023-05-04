@@ -1,30 +1,37 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include <set>
-#include <algorithm>
+#include <string>
+#include <cctype>
 using namespace std;
 int main() {
-    int N;
-    cin >> N;
-    vector<string> strings;
-    for (int i = 0; i < N; i++) {
+    setlocale (LC_ALL, "Russian");
+    int n;
+    cout << "Введите количество строк: ";
+    cin >> n;
+    cout << "Введите строки: ";
+    for (int i = 0; i < n+1; i++) {
         string s;
         getline(cin, s);
-        strings.push_back(s);
+        set<char> uppercase_chars;
+        set<char> lowercase_chars;
+        for (char c : s) {
+            if (isupper(c)) {
+                uppercase_chars.insert(c);
+            } else if (islower(c)) {
+                lowercase_chars.insert(c);
+            }
+        }
+        set<char> result;
+        for (char c : uppercase_chars) {
+            if (lowercase_chars.find(tolower(c)) == lowercase_chars.end()) {
+                result.insert(c);
+            }
+        }
+        for (char c : result) {
+            cout << c;
+        }
+        cout << endl;
     }
-    for (int i = 0; i < N; i++) {
-        set<char> upper; //множество с прописными буквами
-        for (int j = 0; j < strings[i].length(); j++) {
-            if (isupper(strings[i][j])) { //если символ - прописная буква
-                upper.insert(strings[i][j]); //добавляем ее в upper
-            }
-        }
-        for (char c: strings[i]){
-            if (islower(c) && upper.count(toupper(c))==0)
-             cout << c << " ";
-            }
-            cout << endl;
-        }
     return 0;
 }
+
