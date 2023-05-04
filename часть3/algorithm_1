@@ -1,95 +1,80 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <cmath>
 using namespace std;
-bool compare(pair<int, int> a, pair<int, int> b) {
-    return (a.first + a.second) < (b.first + b.second); // функция сравнения для сортировки в порядке возрастания суммы координат
+bool compare1(pair<int, int> x)
+{
+return x.second < 0;
 }
-int main() {
-    setlocale(LC_ALL, "Russian");
-    vector<pair<int, int>> points; // вектор для хранения точек
-    int n;
-    cout << "Введите количество точек: ";
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        int x, y;
-        cin >> x >> y;
-        points.push_back(make_pair(x, y));
-    }
-    //a
-    vector<pair<int, int>> newPoints; // вектор для хранения новых точек
-    for (int i = 0; i < n; i++) {
-        if (points[i].second > 0) { // если точка не лежит в нижней половине системы координат
-            newPoints.push_back(points[i]); // добавляем точку в новый вектор
-        }
-    }
-    cout << "Новые координаты точек:" << endl;
-    for (int i = 0; i < newPoints.size(); i++) {
-        cout << newPoints[i].first << " " << newPoints[i].second << endl;
-    }
-    //b
-    int count = 0; // количество точек, лежащих на одной вертикальной или горизонтальной прямой с данной
-    int x, y;
-    cout << "Введите координаты точки: ";
-    cin >> x >> y;
-    for (int i = 0; i < n; i++) {
-        if (points[i].first == x || points[i].second == y) { // если точка лежит на одной вертикальной или горизонтальной прямой с данной
-            count++;
-        }
-    }
-    cout << "Количество точек, лежащих на одной вертикальной или горизонтальной прямой с данной: " << count << endl;
-    //в)
-    int lastPointIndex = -1; // индекс последней точки, удалённой от начала координат не менее чем на 10
-    for (int i = 0; i < n; i++) {
-        double distance = sqrt(pow(points[i].first, 2) + pow(points[i].second, 2)); // вычисляем расстояние от точки до начала координат
-        if (distance >= 10) { // если точка удалена от начала координат не менее чем на 10
-            lastPointIndex = i; // запоминаем индекс этой точки
-        }
-    }
-    if (lastPointIndex == -1) { // если такой точки нет
-        cout << "Точки, удалённой от начала координат не менее чем на 10, нет" << endl;
-    } else {
-        cout << "Последняя точка, удалённая от начала координат не менее чем на 10: " << points[lastPointIndex].first << " " << points[lastPointIndex].second << endl;
-    }
-    //г)
-    sort(points.begin(), points.end(), compare); // сортируем точки в порядке возрастания суммы координат
-    cout << "Отсортированные координаты точек:" << endl;
-    for (int i = 0; i < n; i++) {
-        cout << points[i].first << " " << points[i].second << endl;
-    }
-    return 0;
+bool campare2(pair<int, int> point, int x1, int x2, int y1, int y2)
+{
+return (point.first == x1 && point.second >= y1 && point.second <= y2)  
+(point.second == y1 && point.first >= x1 && point.first <= x2);
 }
-#include <iostream>
-#include <algorithm>
-#include <vector>
-using namespace std;
-struct Point {
-    int x, y;
-};
-bool cmp(const Point& p1, const Point& p2) {
-    return p1.y < p2.y;
+int main()
+{
+setlocale(LC_ALL, "Rus");
+vector <pair<int, int>> Point;
+int n, x, y, count = 0;
+cin >> n;
+for (int i = 0; i < n; i++)
+{
+cin >> x >> y;
+if (y < 0)
+count++;
+Point.push_back(make_pair(x, y));
 }
-
-int main() {
-    int n;
-    cin >> n;
-    vector<Point> points(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> points[i].x >> points[i].y;
-    }
-    //а
-    sort(points.begin(), points.end(), cmp);
-    vector<Point> result;
-    for (int i = 0; i < n; ++i) {
-        if (points[i].y >= 0) {
-            result.push_back(points[i]);
-        }
-    }
-    for (const auto& point : result) {
-        cout << point.x << " " << point.y << endl;
-    }
-
-    return 0;
+//a
+if (count > 0) {
+Point.erase(remove_if(Point.begin(), Point.end(), compare1));
+cout << "После удаления точек, лежищих в нижней половине системы 
+координат:" << endl;
+for (unsigned int i = 0; i < Point.size(); i++)
+{
+cout << Point[i].first << ' ' << Point[i].second << endl;
 }
-
+}
+else
+cout << "Все точки лежат выше прямой X" << endl;
+//б
+cout << "Введите координаты прямой" << endl;
+int x1, x2, y1, y2;
+cin >> x1 >> y1 >> x2 >> y2;
+cout << "Количество точек, лежащих на прямой = " << count_if(Point.begin(), 
+Point.end(), [&](const pair<int, int>& p)
+{
+return (p.first == x1 && p.second >= y1 && p.second <= y2)  
+(p.second == y1 && p.first >= x1 && p.first <= x2);
+});;
+//в
+cout << endl;
+auto result = find_if(Point.rbegin(), Point.rend(), [&](const pair<int, int>& p2)
+{
+40
+return p2.first * p2.first + p2.second * p2.second >= 100;
+});
+if (result == Point.rend())
+cout << "Точки не найдены" << endl;
+else
+{
+for (auto p2 : Point)
+{
+if (p2 == *result)
+cout << "Последняя точка, удаленная от начала координат не 
+менее чем на 10: " << p2.first << ' ' << p2.second;
+}
+}
+//г
+cout << endl;
+vector<int> sum;
+for (auto p3 : Point)
+{
+sum.push_back(p3.first + p3.second);
+}
+stable_sort(sum.begin(), sum.end());
+cout << "Суммы координат в порядке возрастания: ";
+for (auto a : sum)
+{
+cout << a << ' ';
+}
+}
