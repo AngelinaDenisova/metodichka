@@ -1,0 +1,40 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <map>
+#include <vector>
+using namespace std;
+ifstream in("input.txt");
+ofstream out("output.txt");
+int main(){
+    // создать map для хранения слов и их позиций
+    map<string, vector<int>> words;
+    string word;
+    int position = 0;
+    // читать входной файл по словам
+    while (in >> word) {
+        // добавить позицию текущего слова к вектору позиций для данного слова в map
+        words[word].push_back(position);
+        // увеличить позицию на длину текущего слова и 1 (для пробела)
+        position += word.length() + 1;
+    }
+    
+    // закрыть входной файл
+    in.close();
+    // вывести все слова и их позиции в выходной файл
+    for (auto it = words.begin(); it != words.end(); ++it) {
+        out << it->first << ": ";
+        for (int i = 0; i < it->second.size(); ++i) {
+            out << it->second[i];
+            if (i != it->second.size() - 1) {
+                out << ", ";
+            }
+        }
+        out << endl;
+    }
+    
+    // закрыть выходной файл
+    out.close();
+    return 0;
+}
