@@ -1,51 +1,53 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
-#include <vector>
 #include <algorithm>
-
+#include <vector>
+#include <numeric>
 using namespace std;
-
 struct Student {
-    int group;
-    string surname, name, otch;
-    int year;
-    vector<int> grades;
+string group, surname, name, patronymic;
+int birth_year;
+vector <int> grades;
+int sum;
 };
 
-bool compare(Student a, Student b) {
-    int sum_a = 0;
-    int sum_b = 0;
-    for (int i = 0; i < 5; i++) {
-        sum_a += a.grades[i];
-        sum_b += b.grades[i];
-    }
-    return sum_a > sum_b;
+bool compare_students(Student s1, Student s2) {
+return s1.sum > s2.sum;
 }
 
 int main() {
-    ifstream in("input.txt");
-    vector<Student> students;
-    while (!in.eof()) {
-        Student s;
-        in >> s.group >> s.surname >> s.name >> s.otch >> s.year;
-        for (int i = 0; i < 5; i++) {
-            int grade;
-            in >> grade;
-            s.grades.push_back(grade);
-        }
-        students.push_back(s);
+ifstream input_file("input.txt");
+ofstream output_file("output.txt");
+vector<Student> students;
+string group, surname, name, patronymic;
+int birth_year, grade;
+while (input_file >> group >> surname >> name >> patronymic >> birth_year) {
+    Student student;
+    student.group = group;
+    student.surname = surname;
+    student.name = name;
+    student.patronymic = patronymic;
+    student.birth_year = birth_year;
+    for (int i = 0; i < 5; i++) {
+        input_file >> grade;
+        student.grades.push_back(grade);
     }
-    in.close();
-    sort(students.begin(), students.end(), compare);
-    ofstream out("output.txt");
-    for (int i = 0; i < students.size(); i++) {
-        out << students[i].group << " " << students[i].surname << " " << students[i].name << " " << students[i].otch << " " << students[i].year << " ";
-        for (int j = 0; j < 5; j++) {
-            out << students[i].grades[j] << " ";
-        }
-        out << endl;
+    student.sum = accumulate(student.grades.begin(), student.grades.end(), 0);
+    students.push_back(student);
+}
+sort(students.begin(), students.end(), compare_students);
+for (Student student : students) {
+    output_file << student.group << " " << student.surname << " "
+                << student.name << " " << student.patronymic << " "
+                << student.birth_year << " ";
+    for (int grade : student.grades) {
+        output_file << grade << " ";
     }
-    out.close();
-    return 0;
+    output_file << endl;
+}
+
+input_file.close();
+output_file.close();
+return 0;
 }
