@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+#include <set>
+
+using namespace std;
+
+int main() {
+    string text = "This is a sample text rrr. It contains multiple sentences! Some of them are questions? Others are exclamations! We need to find the unique words in non-question and non-exclamation sentences.";
+
+    set<string> uniqueWords;
+
+    // разбиваем текст на предложения
+    size_t pos = 0;
+    while ((pos = text.find_first_of(".?!")) != string::npos) {
+        string sentence = text.substr(0, pos + 1);
+        text.erase(0, pos + 1);
+
+        // проверяем, является ли предложение вопросительным или восклицательным
+        bool isQuestion = (sentence.find("?") != string::npos);
+        bool isExclamation = (sentence.find("!") != string::npos);
+
+        if (!isQuestion && !isExclamation) { // если предложение не является вопросительным или восклицательным
+            // разбиваем предложение на слова и добавляем их в set
+            string word;
+            for (char& c : sentence) {
+                if (c == ' ' || c == '.' || c == '?' || c == '!') {
+                    // добавляем слово в set
+                    if (!word.empty()) {
+                        uniqueWords.insert(word);
+                        word.clear();
+                    }
+                } else {
+                    // добавляем символ в текущее слово
+                    word += tolower(c);
+                }
+            }
+        }
+    }
+
+    // выводим количество уникальных слов
+    for(auto i : uniqueWords)
+        cout << i << endl;
+    cout << "Number of unique words: " << uniqueWords.size() << endl;
+
+    return 0;
+}
