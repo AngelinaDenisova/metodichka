@@ -1,0 +1,165 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
+#include <vector>
+
+using namespace std;
+
+class BookLibrary {
+public:
+    // метод для добавления автора
+    void addAuthor(string author, string realName = "") {
+        // если не указано реальное имя, то псевдонимом будет сам автор
+        if (realName.empty()) realName = author;
+        authors[author] = realName;
+    }
+
+    // метод для удаления автора
+    void removeAuthor(string author) {
+        authors.erase(author);
+        works.erase(author);
+    }
+
+    // метод для добавления произведения автора
+    void addWork(string author, string work) {
+        works[author].push_back(work);
+    }
+
+    // метод для удаления произведения автора
+    void removeWork(string author, string work) {
+        auto& worksList = works[author];
+        worksList.erase(std::remove(worksList.begin(), worksList.end(), work), worksList.end());
+    }
+
+    // метод для изменения произведения автора
+    void updateWork(string author, string oldWork, string newWork) {
+        auto& worksList = works[author];
+        auto it = std::find(worksList.begin(), worksList.end(), oldWork);
+        if (it != worksList.end()) *it = newWork;
+    }
+
+    // метод для изменения псевдонима автора на его реальную фамилию
+    void updateAuthorName(string author, string realName) {
+        authors[author] = realName;
+    }
+
+    // метод для получения списка произведений автора
+    vector<string> getWorksByAuthor(string author) {
+        return works[author];
+    }
+
+    // метод для поиска произведений всех авторов, написанных в заданном промежутке лет
+    vector<string> getWorksByYears(int startYear, int endYear) {
+        vector<string> result;
+        for (auto& author : authors) {
+            for (auto& work : works[author.first]) {
+                if (years[work] >= startYear && years[work] <= endYear) {
+                    result.push_back(work + " by " + author.second);
+                }
+            }
+        }
+        return result;
+    }
+
+private:
+    map<string, string> authors; // хранит авторов и их реальные фамилии
+    map<string, vector<string>> works; // хранит произведения авторов
+    map<string, int> years; // хранит годы написания произведений
+};
+
+int main() {
+    BookLibrary library;
+
+    // открываем файл для чтения
+    ifstream inFile("library.txt");
+    if (!inFile) {
+        cerr << "Unable to open file library.txt" << endl;
+        return 1;
+    }
+
+    string line;
+    while (getline(inFile, line)) {
+        // разбиваем строку на слова
+        vector<string> words;
+        string word;
+        for (char c : line) {
+            if (c == ',') {
+                words.push_back(word);
+                word = "";
+            } else {
+                word += c;
+            }
+        }
+        words.push_back(word);
+
+        // первое слово - команда
+        string command = words[0];
+        if (command == "addAuthor") {
+            // второе слово - автор
+            string author = words[1];
+            // третье слово (если есть) - реальное имя
+            string realName = "";
+            if (words.size() == 3) realName = words[2];
+            library.addAuthor(author, realName);
+        } else if (command == "removeAuthor") {
+            // второе слово - автор
+            string author = words[1];
+            library.removeAuthor(author);
+        } else if (command == "addWork") {
+            // второе слово - автор
+            string author = words[1];
+            // третье слово - произведение
+            string work = words[2];
+            library.addWork(author, work);
+        } else if (command == "removeWork") {
+            // второе слово - автор
+            string author = words[1];
+            // третье слово - произведение
+            string work = words[2];
+            library.removeWork(author, work);
+        } else if (command == "updateWork") {
+            // второе слово - автор
+            string author = words[1];
+            // третье слово - старое произведение
+            string oldWork = words[2];
+            // четвертое слово - новое произведение
+            string newWork = words[3];
+            library.updateWork(author, oldWork, newWork);
+        } else if (command == "updateAuthorName") {
+            // второе слово - автор
+            string author = words[1];
+            // третье слово - реальное имя
+            string realName = words[2];
+            library.updateAuthorName(author, realName);
+        } else if (command == "addYear") {
+            // второе слово - произведение
+            string work = words[1];
+            // третье слово - год написания
+            int year = stoi(words[2]);
+            library.addYear(work, year);
+        }
+    }
+
+    // получаем список произведений автора
+    auto worksList = library.getWorksByAuthor("Leo Tolstoy");
+    cout << "Works by Leo Tolstoy:" << endl;
+    for (auto work : worksList) {
+        cout << "- " << work << endl;
+    }
+
+    // удаляем произведение автора
+    library.removeWork("Leo Tolstoy", "The Death of Ivan Ilyich");
+
+    // изменяем произведение автора
+    library.updateWork("Leo Tolstoy", "War and Peace", "War and Peace (1869)");
+
+    // получаем список произведений авторов, написанных в заданном промежутке лет
+    auto worksByYears = library.getWorksByYears(1860, 1880);
+    cout << "Works by all authors from 1860 to 1880:" << endl;
+    for (auto work : worksByYears) {
+        cout << "- " << work << endl;
+    }
+
+    return 0;
+}
