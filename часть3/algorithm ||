@@ -1,0 +1,58 @@
+//Создать "мелодию" - последовательный контейнер элементов класса "звук" (поля: высота ноты, длительность звучания).
+//Проверить, можно ли составить одну заданную мелодию, используя только те звуки, которые встречаются в другой заданной мелодии
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+class Sound {
+public:
+    int height; //высота ноты
+    int duration; //блительность звучания
+    Sound(int h, int d) {
+        height = h;
+        duration = d;
+    }
+};
+
+int main() {
+    vector<Sound> melody1;
+    vector<Sound> melody2;
+    int num_sounds;
+    cout << "Введите количество звуков в мелодии 1: ";
+    cin >> num_sounds;
+    cout << "Введите высоты и длительность звуков " << " мелодии 1: ";
+    for (int i = 0; i < num_sounds; i++) {
+        int height, duration;
+        cin >> height >> duration;
+        Sound sound(height, duration);
+        melody1.push_back(sound);
+    }
+    cout << endl;
+    cout << "Введите количество звуков в мелодии 2: ";
+    сin >> num_sounds;
+    cout << "Введите высоты и длительность звуков " << " мелодии 2: ";
+    for (int i = 0; i < num_sounds; i++) {
+        int height, duration;
+        cin >> height >> duration;
+        Sound sound(height, duration);
+        melody2.push_back(sound);
+    }
+
+    vector<int> heights1, heights2;
+    for (auto sound : melody1) {
+        heights1.push_back(sound.height); //векторы заполняются высотами звуков
+    }
+    for (auto sound : melody2) {
+        heights2.push_back(sound.height);
+    }
+    sort(heights1.begin(), heights1.end()); //высоты сортируются
+    sort(heights2.begin(), heights2.end());
+    //includes проверяет, может ли мелодия 1 быть составлена только из звуков мелодии 2.
+    if (includes(heights2.begin(), heights2.end(), heights1.begin(), heights1.end())) {
+        cout << "Мелодия 1 может быть составлена из мелодии 2\n";
+    }
+    else {
+        cout << "Мелодия 1 не может быть составлена из мелодии 2\n";
+    }
+    return 0;
+}
