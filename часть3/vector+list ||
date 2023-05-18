@@ -1,0 +1,92 @@
+//Спиcок товаров на складе. Операции:
+//а) Удалить все товары с истёкшим сроком годности. Добавить новый товар в конец списка.
+//б) Удалить первый товар, переставив на его место последний. Удвоить вес первых N товаров списка.
+
+//б) Для данной задачи мы выберем контейнер std::vector
+//Он позволяет эффективно выполнять операции добавления и удаления элементов в конец вектора, а также доступ к элементам по индексу.
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+class Good { //класс, который хранит товар и его вес
+public:
+    Good(string name, float weight) : name(name), weight(weight) {} //конструктор, принимающий имя и вес товара
+
+    string get_name() const { //метод возращает имя товара
+        return name;
+    }
+    float get_weight() const { //метод возвращает вес товара
+        return weight;
+    }
+    void double_weight() { //метод удваивает вес товара
+        weight *= 2;
+    }
+
+private:
+    string name;
+    float weight;
+};
+
+class GoodsList { //класс списка товаров
+public:
+    GoodsList() {}
+
+    void add_good(Good good) { //метод, добавляющий товар в конец списка
+        goods.push_back(good);
+    }
+
+    void remove_first_good() { //метод, удаляющий первый товар из списка
+        if (!goods.empty()) {
+            goods.front() = goods.back();
+            goods.pop_back();
+        }
+    }
+
+    void double_first_N_goods(int N) { //метод удваивает вес первых n товаров из списка
+        for (int i = 0; i < min(N, (int)goods.size()); i++) {
+            goods[i].double_weight();
+        }
+    }
+
+    void print_goods() const { // метод выводит список товаров на экран
+        for (auto good : goods) {
+            cout << good.get_name() << ": " << good.get_weight() << endl;
+        }
+    }
+
+private:
+    vector<Good> goods;
+};
+
+int main() {
+    GoodsList goods_list;
+    int num_goods;
+    cout << "Введите количество товаров: ";
+    cin >> num_goods;
+    cout << "Последовательно введите названия товаров и их вес " << ": ";
+    for (int i = 0; i < num_goods; i++) {
+        string name;
+        float weight;
+        cin >> name;
+        cin >> weight;
+        Good good(name, weight);
+        goods_list.add_good(good);
+    }
+    cout << "Список товаров до удаления первого товара:" << endl;
+    goods_list.print_goods();
+
+    goods_list.remove_first_good();
+
+    cout << "Список товаров после удаления первого товара:" << endl;
+    goods_list.print_goods();
+
+    int num_goods_to_double;
+    cout << "Введите количество товаров, вес которых нужно удвоить: ";
+    cin >> num_goods_to_double;
+
+    goods_list.double_first_N_goods(num_goods_to_double);
+
+    cout << "Список товаров после удвоения веса первых " << num_goods_to_double << " товаров:" << endl;
+    goods_list.print_goods();
+    return 0;
+}
