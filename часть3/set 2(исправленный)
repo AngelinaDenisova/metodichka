@@ -1,0 +1,40 @@
+#include <iostream>
+#include <string>
+#include <set>
+#include <algorithm>
+using namespace std;
+
+void print_capital_letters(const string& s) {
+    set<char> s1, s2, result;
+    for (char c : s) {   // проходим по строке, если буква прописная, то записываем в s1
+        if (isupper(c)) 
+            s1.insert(c);
+    }
+    for (char c : s) {  // проходим по строке, если буква строчная, то записываем её в s2 в виде прописной
+        if (islower(c)) {
+            s2.insert(toupper(c));
+        }
+    }
+    // разность s1 и s2 записываем в result
+    set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(result, result.begin()));
+    // вывод result
+    for (char c : result)
+        cout << c << " ";
+    cout << endl;
+}
+
+int main() {
+    int n; cin >> n; cin.ignore(); //перевод строки
+    string s;
+   
+    for (int i = 0; i < n; i++) {
+        getline(cin, s); //считывание строки
+        print_capital_letters(s);
+    }
+
+    return 0;
+}
+
+//2
+//Hello, World!
+//The quick brown fox jumps over the lazy dog
