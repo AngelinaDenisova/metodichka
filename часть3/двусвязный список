@@ -1,0 +1,126 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+struct Node { //узел двусвязного списка
+    int data;
+    Node* prev; //указатель на предыдущий элемент списка
+    Node* next; //указатель на следующий элемент списка
+};
+
+//функция добавления нового узла в конец списка
+void push(Node** head_ref, int new_data) { //принимает указатель на голову `head_ref` и `new_data`, которое необходимо добавить в список.
+    Node* new_node = new Node;
+    new_node->data = new_data;
+    new_node->next = nullptr;
+    if (*head_ref == nullptr) { //если список пустой
+        new_node->prev = nullptr; //указатель prev устанавливается на nullptr
+        *head_ref = new_node; //головной узел указывает на новый узел и функция завершается
+    }
+    Node* last = *head_ref;
+    while (last->next != nullptr) { //иначе обходим список до тех пор, пока не найдем последний эл-т
+        last = last->next; //новый элемент добавляется в конец
+    }
+    last->next = new_node;
+    new_node->prev = last; //указатель prev устанавливается на предыдущий элемент
+}
+
+//удаление заданного узла из списка
+void deleteNode(Node** head_ref, Node* del_node) { //принимает указатель на голову и на удаляемый узел
+    if (*head_ref == nullptr || del_node == nullptr) { //если список пустой или узел - nullptr, функция завершается
+        return;
+    }
+    if (*head_ref == del_node) { //если удаляемый узел - голова
+        *head_ref = del_node->next; //то указатель на голову переставляется на следующий элемент
+    }
+    if (del_node->next != nullptr) { //устанавливается связь между предыдущим и следующим узлом
+        del_node->next->prev = del_node->prev;
+    }
+    if (del_node->prev != nullptr) {
+        del_node->prev->next = del_node->next;
+    }
+    delete(del_node); //удаляемый узел освобождается из памяти
+}
+
+//вывод всех элементов списка
+void printList(Node* node) { //принимает указатель на голову
+    while (node != nullptr) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+}
+
+//удаление узлов, меньше среднего арифметического
+void deleteExtraNodes(Node** head_ref) { //принимает указатель на голову
+    if (*head_ref == nullptr) { //если список пустой, функция завершается
+        return;
+    }
+
+    int sum = 0;
+    int count = 0;
+    Node* current = *head_ref;
+    while (current != nullptr) {
+        sum += current->data;
+        count++;
+        current = current->next;
+    }
+    float average = (float)sum / count; //считаем среднее арифметическое
+
+    current = *head_ref;
+    Node* prev_node = nullptr;
+    while (current != nullptr && current->next != nullptr) {
+        if (current->data < average) { //если текущий узел меньше ср.арифм
+            Node* del_node = current;  //то удаляем его из списка.
+            //После удаления, указатель на предыдущий узел должен быть изменен на указатель на следующий узел.
+            //Когда все узлы, удовлетворяющие условию удалены, функция завершает свою работу.
+            if (prev_node != nullptr) {
+                prev_node->next = current->next;
+                current = prev_node->next;
+            }
+            else {
+                *head_ref = current->next;
+                current = *head_ref;
+            }
+            deleteNode(head_ref, del_node);
+        }
+        else {
+            prev_node = current;
+            current = current->next;
+        }
+    }
+}
+
+int main() {
+    ifstream file("input.txt");
+    if (!file) {
+        cout << "Ошибка при открытии файла!" << endl;
+        return 1;
+    }
+    Node* head = nullptr;
+    int num;
+    while (file >> num) {
+        push(&head, num);
+    }
+    file.close();
+
+    cout << "Исходный список: ";
+    printList(head);
+
+    deleteExtraNodes(&head);
+
+    cout << "\nСписок после удаления: ";
+    printList(head);
+
+    return 0;
+}
+
+
+10 
+5
+4
+7
+9
+84
+65
+20
