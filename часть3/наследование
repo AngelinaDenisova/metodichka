@@ -1,0 +1,71 @@
+//Создать абстрактный класс Transport с функциями, позволяющими вывести на экран информацию о транспортном средстве, а также определить грузоподъемность транспортного средства. 
+//Создать производные классы Car (марка, номер, скорость, грузоподъемность), Motorbike (марка, номер, скорость, грузоподъемность, наличие коляски
+//(если  коляска отсутствует, то грузоподъемность равна 0)), Truck (марка, номер, скорость, грузоподъемность, наличие прицепа (если есть прицеп, то грузоподъемность увеличивается в два раза))
+
+#include <iostream>
+using namespace std;
+
+// Абстрактный класс Transport
+class Transport {
+public:
+    virtual void printInfo() = 0; //виртуальные методы
+    virtual int getPayload() = 0;
+};
+
+// Класс Car наследуется от Transport и имеет свои характеристики
+class Car : public Transport {
+public:
+    Car(string brand, string number, int speed, int payload) : brand(brand), number(number), speed(speed), payload(payload) {}
+    void printInfo() { cout << "Марка: " << brand << endl << "Номер: " << number << endl << "Скорость: " << speed << endl; } //выводит инфу о машине
+    int getPayload() { return payload; } //возвращает грузоподъемность
+private:
+    string brand;
+    string number;
+    int speed;
+    int payload;
+};
+
+// Класс Motorbike наследуется от Transport и имеет свои характеристики
+class Motorbike : public Transport {
+public:
+    Motorbike(string brand, string number, int speed, int isBabyCarriage) : brand(brand), number(number), speed(speed), isBabyCarriage(isBabyCarriage) {}
+    void printInfo() { cout << "Марка: " << brand << endl << "Номер: " << number << endl << "Скорость: " << speed << endl; }
+    int getPayload() { if (isBabyCarriage) return payload; else return 0; } //если коляски нет, то грузоподъемность 0
+private:
+    string brand;
+    string number;
+    int speed;
+    int isBabyCarriage;
+    int payload = 100;
+};
+
+// Класс Truck наследуется от Transport и имеет свои характеристики
+class Truck : public Transport {
+public:
+    Truck(string brand, string number, int speed, int isTrailer) : brand(brand), number(number), speed(speed), isTrailer(isTrailer) {}
+    void printInfo() { cout << "Марка: " << brand << endl << "Номер: " << number << endl << "Скорость: " << speed << endl; }
+    int getPayload() { if (isTrailer) return payload * 2; else return payload; } //если есть прицеп, то грузоподъемность увеличивается в 2 раза
+private:
+    string brand;
+    string number;
+    int speed;
+    int isTrailer;
+    int payload = 1000;
+};
+
+int main() {
+    // Создание объектов и вызов функций классов
+    setlocale(LC_ALL, "Ruissian");
+    Car car("BMW", "A123BC", 200, 300);
+    car.printInfo();
+    cout << "Грузоподъемность: " << car.getPayload() << endl;
+    Motorbike bike("Honda", "B456DE", 150, 1); // 1 - коляка есть, 0 - нет
+    bike.printInfo();
+    cout << "Грузоподъемность: " << bike.getPayload() << endl;
+
+    Truck truck("Kamaz", "C789FG", 80, 1); // 1 - есть прицеп, 0 - нет
+    truck.printInfo();
+    cout << "Грузоподъемность: " << truck.getPayload() << endl;
+
+    return 0;
+}
