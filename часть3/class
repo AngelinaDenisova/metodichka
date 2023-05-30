@@ -4,38 +4,40 @@
 если строка не пустая, иначе False, операцию +, которая позволяет реализовать операцию слияния двух строк
 #include <iostream>
 #include <string>
-#include <cmath>
+#include <fstream>
 using namespace std;
 class String {
 private:
-	string line;
-	static int count;
+    string line;
 public:
-	// Функция подсчета количества цифр в строке
-	int CountDigit() {
-		int k = 0;
-		for (char c : line) { //перебираем каждый символ в строке
-			if (isdigit(c))
-				k++;
-		}
-		return k;
-	}
-	// Функция для вывода только тех букв,которые встречаются только один раз
-	void sumb(const string& str) {
-		int charCount[256] = { 0 };
-		for (char c : str) {
-			charCount[(int)c]++;
-		}
-		for (char c : str) {
-			if (charCount[(int)c] == 1) {
-				cout << c;
-				charCount[(int)c] = 0;
-			}
-		}
-	}
-	// Функция для вывода на экран самой длинной последовательности повторяющихся символов в строке
-	void maxi() {
-		int maxLength = 0, currentLength = 1; //максимальная и текущая длина последовательности
+    String(string s = "") { //конструктор класса принимает строку s и 
+        line = s;           // инициализирует поле line этой строкой
+    }
+
+    int countDigits() {  //подсчитывает количество цифр в строке
+    int count = 0;
+        for (int i = 0; i < line.length(); i++) {
+            if (isdigit(line[i])) { // если символ - цифра, увеличиваем счетчик
+                count++;
+            }
+        }
+        return count;
+    }
+
+    void printUniqueChars() { //выводит на экран все символы в строке, встречающиеся в ней только 1 раз. 
+        string uniqueChars = "";
+        for (int i = 0; i < line.length(); i++) {
+            char c = line[i];
+            if (line.find(c) == line.rfind(c)) {
+                uniqueChars += " ";
+                uniqueChars += c;
+            }
+        }
+        cout << uniqueChars << endl;
+    }
+
+    void printLongestSequence() { // выводит на экран самую длинную последовательность повторяющихся символов в строке
+        int maxLength = 0, currentLength = 1; //максимальная и текущая длина последовательности
 		char maxChar = line[0], currentChar = line[0]; //символ с максимальной длиной и текущий символ
 		for (int i = 1; i < line.length(); i++) {
 			if (line[i] == line[i - 1]) {
@@ -54,26 +56,50 @@ public:
 			maxLength = currentLength;
 			maxChar = currentChar;
 		}
-		cout << "Самая длинная последовательность: ";
 		for (int i = 0; i < maxLength; i++) {
 			cout << maxChar;
 		}
 		cout << endl;
-	}
-	// Метод для получения общего количества символов в строке
-	int length() {
-		return line.length();
-	}
-	// Метод для сравнения двух строк на равенство
-	bool rav(String other) {
-		return line == other.line;
-	}
-	// Перегрузка операции унарный !
-	bool operator!() {
-		return line.empty();
-	}
-	String operator+(String other) {
-		return line+other.line;
-	}
+    }
+
+    int length() { //возвращает длину строки
+        return line.length();
+    }
+
+    bool isEqual(String s) { //Сравнивает строки на равенство. Возвращает true, если строки равны, и false в противном случае. 
+        return line == s.line;
+    }
+
+    bool operator! () { // Перегруженный оператор ! возвращает значение true, если строка не пустая, и false в противном случае. 
+        return !line.empty();
+    }
+
+    String operator+ (String s) { //Перегруженный оператор + позволяет объединить две строки. Возвращает новый объект String, содержащий объединение строк. 
+        return String(line + s.line);
+    }
 };
-int String::count = 0;
+int main(){
+    setlocale(LC_ALL, "Russian");
+    string s1, s2;
+    getline(cin, s1);
+    getline(cin, s2);
+    String str1(s1);
+    String str2(s2);
+    cout << "Количество цифр в строке 1: " << str1.countDigits() << endl;
+    cout << "Количество цифр в строке 2: " << str2.countDigits() << endl;
+    cout << "Уникальные символы в строке 1: ";
+    str1.printUniqueChars();
+    cout << "Уникальные символы в строке 2: ";
+    str2.printUniqueChars();
+    cout << "Максимальная посл-ть повторяющихся символов 1: ";
+    str1.printLongestSequence();
+    cout << "Максимальная посл-ть повторяющихся символов 2: ";
+    str2.printLongestSequence();
+    cout << "Длина строки 1: " << str1.length() << endl;
+    cout << "Длина строки 2: " << str2.length() << endl;
+    cout << "Строки равны? " << (str1.isEqual(str2) ? "Да" : "Нет") << endl;
+    cout << "1 строка пустая? " << (!str1 ? "Нет" : "Да") << endl;
+    cout << "2 строка пустая " << (!str2 ? "Нет" : "Да") << endl;
+    cout << "Объединение строк: " << (str1 + str2).length() << endl;
+    return 0;
+}
